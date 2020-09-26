@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+* {
+  font-family: sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!--boot js--><script id="jsbin-javascript" defer>console.clear()
+// Parse nunjucks arguments (extension)
+const parseArgs = function (args, defaults = []) {
+  const all = [...args];
+  const bodyFn = all.find(arg => typeof arg === 'function');
+  const body = bodyFn();
+  const rest = all.filter(arg => typeof arg !== 'function');
+  
+  const result = [
+    ...rest.map((arg, i) => (typeof arg !== 'undefined' ? arg : defaults[i])),
+    body,
+  ]
+  console.log(result);
+  return result;
+}
+
+const bodyFn = () => 'The body';
+
+// Test cases
+parseArgs([undefined, bodyFn]);
+parseArgs([undefined, bodyFn], ['']);
+
+// Test missing arguments
+parseArgs([undefined, undefined, bodyFn], ['', {}]);
+parseArgs([undefined, bodyFn, undefined], ['', {}]);
+parseArgs([bodyFn, undefined, undefined], ['', {}]);
+
+</script>
+</body>
+</html>
